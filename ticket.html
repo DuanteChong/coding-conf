@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Your personal Coding Conf 2026 conference ticket.">
+  <title>Your Ticket | Coding Conf 2026</title>
+  <link rel="icon" type="image/png" href="assets/images/favicon-32x32.png">
+
+  <!-- Inconsolata font from the style guide -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <!-- Site header: logo and main navigation -->
+  <header class="site-header">
+    <a href="index.html">
+      <img src="assets/images/logo-full.svg" alt="Coding Conf - home page" width="209" height="30">
+    </a>
+    <nav aria-label="Main navigation">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="login.html">Register</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+
+    <!-- Success message: the empty spans are filled in by ticket.js -->
+    <section class="ticket-banner" aria-labelledby="ticket-title">
+      <h1 id="ticket-title">Congrats, <span class="gradient-text" id="banner-name"></span>! Your ticket is ready.</h1>
+      <p>
+        We've emailed your ticket to <span class="highlight" id="banner-email"></span>
+        and will send updates in the run up to the event.
+      </p>
+    </section>
+
+    <!-- The ticket: glass card with logo, event details, attendee and serial number -->
+    <section class="ticket-section" aria-label="Your conference ticket">
+      <article class="ticket glass">
+        <h2 class="visually-hidden">Coding Conf 2026 ticket</h2>
+
+        <div class="ticket-main">
+          <div>
+            <img class="ticket-logo" src="assets/images/logo-full.svg" alt="Coding Conf" width="209" height="30">
+            <p class="ticket-meta"><time datetime="2026-10-26">Oct 26, 2026</time> / Papine, Kgn</p>
+          </div>
+
+          <div class="attendee">
+            <img class="attendee-photo" id="ticket-avatar" src="assets/images/image-avatar.jpg"
+              alt="Profile photo of the attendee" width="80" height="80">
+            <div>
+              <p class="attendee-name" id="ticket-name"></p>
+              <a class="github-link" id="ticket-github" href="https://github.com/" target="_blank" rel="noopener">
+                <img src="assets/images/icon-github.svg" alt="" width="22" height="23">
+                <span id="ticket-handle"></span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <p class="ticket-number">
+          <span class="visually-hidden">Ticket number: </span><span id="ticket-number"></span>
+        </p>
+
+      </article>
+
+      <div class="actions">
+        <button class="button button-outline" type="button" id="start-over">Register another ticket</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Site footer: the two paragraphs are floated left and right on wider screens -->
+  <footer class="site-footer">
+    <p class="footer-left">&copy; 2026 Coding Conf &middot; Papine, Kgn</p>
+    <p class="footer-right">CIT2011 IA#2 &middot; Duanté Chong (2501967)</p>
+  </footer>
+
+  <script src="js/ticket.js"></script>
+</body>
+
+</html>

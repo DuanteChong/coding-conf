@@ -1,0 +1,783 @@
+/* ==========================================================
+   style.css - Coding Conf (CIT2011 IA#2)
+   Author: Duanté Chong (2501967)
+
+   Contents
+     1. Custom properties (variables)
+     2. Base styles
+     3. Layout: skip link, header, main, footer
+     4. Buttons
+     5. Glass effect
+     6. Landing page (index.html)
+     7. Registration form (login.html)
+     8. Ticket page (ticket.html)
+     9. Animations
+    10. Responsive breakpoints (mobile first)
+   ========================================================== */
+
+
+/* ---------- 1. CUSTOM PROPERTIES ---------- */
+:root {
+  /* Colours from the style guide */
+  --neutral-0: hsl(0, 0%, 100%);
+  --neutral-300: hsl(252, 6%, 83%);
+  --neutral-500: hsl(245, 15%, 58%);
+  --neutral-700: hsl(245, 19%, 35%);
+  --neutral-900: hsl(248, 70%, 10%);
+  --orange-500: hsl(7, 88%, 67%);
+  --orange-700: hsl(7, 71%, 60%);
+  --text-gradient: linear-gradient(90deg, hsl(7, 86%, 67%), hsl(0, 0%, 100%));
+
+  /* Glass effect colours */
+  --glass-fill: hsla(0, 0%, 100%, 0.08);
+  --glass-fill-hover: hsla(0, 0%, 100%, 0.2);
+  --glass-border: hsla(0, 0%, 100%, 0.4);
+
+  /* Font and fluid font sizes (clamp = smallest, preferred, largest) */
+  --font-main: "Inconsolata", "Courier New", monospace;
+  --text-body: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem);
+  --text-small: clamp(0.875rem, 0.82rem + 0.2vw, 1rem);
+  --text-title: clamp(1.75rem, 1rem + 3.2vw, 3.5rem);
+  --text-heading: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem);
+
+  /* Spacing, shape and speed */
+  --space-m: clamp(1rem, 0.8rem + 0.8vw, 1.5rem);
+  --space-l: clamp(2rem, 1.2rem + 3vw, 4rem);
+  --radius: 0.75rem;
+  --speed: 0.25s;
+
+  /* Background images (swapped at the breakpoints in section 10) */
+  --bg-photo: url("../assets/images/background-mobile.png");
+  --bg-squiggle: url("../assets/images/pattern-squiggly-line-bottom-mobile-tablet.svg");
+}
+
+
+/* ---------- 2. BASE STYLES ---------- */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  font-family: var(--font-main);
+  font-size: var(--text-body);
+  line-height: 1.5;
+  color: var(--neutral-0);
+  background-color: var(--neutral-900);
+
+  /* Six layers: two circles, top squiggle, bottom squiggle, lines, photo */
+  background-image:
+    url("../assets/images/pattern-circle.svg"),
+    url("../assets/images/pattern-circle.svg"),
+    url("../assets/images/pattern-squiggly-line-top.svg"),
+    var(--bg-squiggle),
+    url("../assets/images/pattern-lines.svg"),
+    var(--bg-photo);
+  background-repeat: no-repeat;
+  background-position:
+    left -4rem top -5rem,
+    right -6rem top 36rem,
+    right -9rem top 1rem,
+    left -2rem bottom,
+    center top,
+    center top;
+
+  /* The curves are drawn smaller on phones so they do not cover the text */
+  background-size: auto, auto, 16rem auto, 15rem auto, auto, cover;
+}
+
+/* :is() lets one rule style several elements, :where() keeps the specificity at zero */
+:is(h1, h2, h3, p) {
+  margin: 0;
+}
+
+:is(h1, h2, h3) {
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+:where(ul, ol) {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+h1 {
+  font-size: var(--text-title);
+}
+
+h2 {
+  font-size: var(--text-heading);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+}
+
+/* Visible keyboard focus for every interactive element */
+:is(a, button, input):focus {
+  outline: 3px solid var(--neutral-0);
+  outline-offset: 3px;
+}
+
+/* Gradient text from the style guide */
+.gradient-text {
+  color: var(--orange-500);
+  background: var(--text-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.highlight {
+  color: var(--orange-500);
+}
+
+/* Text for screen readers only */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+
+/* ---------- 3. LAYOUT ---------- */
+
+/* Skip link: sits above the page until it gets keyboard focus */
+.skip-link {
+  position: absolute;
+  top: -4rem;
+  left: 1rem;
+  z-index: 10;
+  padding: 0.5rem 1rem;
+  color: var(--neutral-900);
+  background: var(--neutral-0);
+  border-radius: 0.5rem;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+.site-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: var(--space-m) 1rem 0;
+}
+
+.site-header nav ul {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.site-header nav a {
+  padding: 0.4rem 0.25rem;   /* bigger tap area */
+  font-size: var(--text-small);
+  color: var(--neutral-300);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: color var(--speed), border-color var(--speed);
+}
+
+.site-header nav a:is(:hover, :focus, [aria-current="page"]) {
+  color: var(--neutral-0);
+  border-bottom-color: var(--orange-500);
+}
+
+main {
+  flex: 1;
+  width: calc(100% - 2rem);
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: var(--space-l) 0;
+}
+
+/* Dark see-through band so the footer text stays readable over the background curves */
+.site-footer {
+  padding: var(--space-m) 1rem;
+  font-size: var(--text-small);
+  color: var(--neutral-300);
+  text-align: center;
+  background-color: hsla(248, 70%, 10%, 0.75);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  overflow: hidden;   /* makes the footer wrap around its floated paragraphs */
+}
+
+
+/* ---------- 4. BUTTONS ---------- */
+.button {
+  display: inline-block;
+  padding: 1rem 1.75rem;
+  font-family: inherit;
+  font-size: var(--text-body);
+  font-weight: 800;
+  color: var(--neutral-900);
+  text-align: center;
+  text-decoration: none;
+  background: var(--orange-500);
+  border: 2px solid var(--orange-500);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background-color var(--speed), transform var(--speed), box-shadow var(--speed);
+}
+
+.button:is(:hover, :focus) {
+  background: var(--orange-700);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 0 hsla(0, 0%, 100%, 0.35);
+}
+
+.button-outline {
+  color: var(--neutral-0);
+  background: transparent;
+}
+
+.button-outline:is(:hover, :focus) {
+  color: var(--neutral-900);
+}
+
+
+/* ---------- 5. GLASS EFFECT ---------- */
+/* Glassmorphism: see-through fill, blurred backdrop and a fine white border */
+.glass {
+  background-color: var(--glass-fill);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+
+/* ---------- 6. LANDING PAGE ---------- */
+.hero {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-m);
+  padding-bottom: var(--space-l);
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: clamp(2.5rem, 1.2rem + 6vw, 5.5rem);
+}
+
+.eyebrow {
+  padding: 0.25rem 1rem;
+  font-size: var(--text-small);
+  color: var(--neutral-300);
+  border: 1px solid var(--neutral-500);
+  border-radius: 2rem;
+}
+
+:is(.lead, .section-text) {
+  max-width: 40rem;
+  color: var(--neutral-300);
+}
+
+.event-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.event-meta li {
+  padding: 0.75rem 1.5rem;
+}
+
+.meta-label {
+  font-weight: 800;
+  color: var(--orange-500);
+}
+
+/* Sections under the hero share the same centred layout */
+:is(.overview, .schedule, .cta) {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-m);
+  padding: var(--space-l) 0;
+  text-align: center;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: var(--space-m);
+  width: 100%;
+}
+
+.card {
+  padding: var(--space-m);
+  text-align: left;
+  transition: transform var(--speed), background-color var(--speed);
+}
+
+.card:hover {
+  background-color: var(--glass-fill-hover);
+  transform: translateY(-6px);
+}
+
+.card h3 {
+  margin-bottom: 0.5rem;
+  color: var(--orange-500);
+}
+
+.card p {
+  color: var(--neutral-300);
+}
+
+.schedule-list {
+  display: grid;
+  gap: 0.25rem;
+  width: 100%;
+  max-width: 44rem;
+  padding: var(--space-m);
+  text-align: left;
+}
+
+/* Time on the left, description on the right (it wraps neatly on small screens) */
+.schedule-list li {
+  display: flex;
+  gap: 1rem;
+}
+
+/* The line between rows: every item except the last one */
+.schedule-list li:not(:last-child) {
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.schedule-list li:not(:first-child) {
+  padding-top: 0.5rem;
+}
+
+.time {
+  flex: none;
+  min-width: 6rem;
+  font-weight: 800;
+  color: var(--orange-500);
+}
+
+
+/* ---------- 7. REGISTRATION FORM ---------- */
+.page-intro {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-m);
+  max-width: 52rem;
+  margin: 0 auto var(--space-l);
+  text-align: center;
+}
+
+.page-intro p {
+  color: var(--neutral-300);
+}
+
+.form {
+  display: grid;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 28.75rem;
+  margin: 0 auto;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+/* Text inputs: every input except the file input */
+.field input:not([type="file"]) {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  font-family: inherit;
+  font-size: var(--text-small);
+  color: var(--neutral-0);
+  background-color: var(--glass-fill);
+  border: 1px solid var(--neutral-500);
+  border-radius: var(--radius);
+  transition: background-color var(--speed), border-color var(--speed);
+}
+
+.field input::placeholder {
+  color: var(--neutral-300);
+}
+
+/* Drag and drop box for the avatar */
+.dropzone {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 8rem;
+  padding: 1.25rem 1rem;
+  text-align: center;
+  background-color: var(--glass-fill);
+  border: 1px dashed var(--neutral-300);
+  border-radius: var(--radius);
+  transition: background-color var(--speed), border-color var(--speed);
+}
+
+/* The real file input covers the whole box but cannot be seen */
+.dropzone-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.dropzone-content {
+  display: grid;
+  justify-items: center;
+  gap: 1rem;
+}
+
+/* display: grid above would override the hidden attribute, so hide it again here */
+.dropzone-content[hidden] {
+  display: none;
+}
+
+.dropzone-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.1rem;
+  height: 3.1rem;
+  background-color: var(--glass-fill);
+  border: 1px solid var(--neutral-500);
+  border-radius: var(--radius);
+}
+
+.avatar-preview {
+  width: auto;          /* the width follows the photo's own shape */
+  max-width: 6rem;
+  height: 3.1rem;
+  border-radius: var(--radius);
+}
+
+/* The two small buttons must sit above the invisible file input */
+.dropzone-buttons {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.dropzone-buttons button {
+  padding: 0.5rem 0.8rem;
+  font-family: inherit;
+  font-size: var(--text-small);
+  color: var(--neutral-0);
+  background-color: var(--glass-fill-hover);
+  border: 0;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: background-color var(--speed);
+}
+
+.dropzone-buttons button:first-child {
+  text-decoration: underline;
+}
+
+.dropzone-buttons button:hover {
+  background-color: var(--neutral-700);
+}
+
+/* Hover, drag-over and focus states for the fields */
+:is(.field input:not([type="file"]), .dropzone):hover,
+.dropzone.dragging {
+  background-color: var(--glass-fill-hover);
+}
+
+.dropzone.dragging {
+  border-color: var(--orange-500);
+}
+
+/* The file input is invisible, so the whole box shows the focus ring */
+.dropzone:has(input:focus) {
+  outline: 3px solid var(--neutral-0);
+  outline-offset: 3px;
+}
+
+.dropzone-input:focus {
+  outline: none;
+}
+
+/* Hint and error messages share one layout: the small icon is a background image on the left.
+   An error paragraph carries the hidden attribute until validation.js has a message for it. */
+:is(.hint, .error) {
+  margin-top: 0.5rem;
+  padding-left: 1.5rem;
+  font-size: var(--text-small);
+  background-repeat: no-repeat;
+  background-position: left 0.2rem;
+  background-size: 1rem 1rem;
+}
+
+.hint {
+  color: var(--neutral-300);
+  background-image: url("../assets/images/icon-info.svg");
+}
+
+.error {
+  color: var(--orange-500);
+  background-image: url("../assets/images/icon-error.svg");
+}
+
+/* When a field is showing an error, hide its hint */
+.field:has(.error:not([hidden])) .hint {
+  display: none;
+}
+
+:is(input[aria-invalid="true"], .dropzone:has([aria-invalid="true"])) {
+  border-color: var(--orange-500);
+}
+
+.form .button {
+  width: 100%;
+}
+
+
+/* ---------- 8. TICKET PAGE ---------- */
+.ticket-banner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);   /* the column can never be wider than the screen */
+  justify-items: center;
+  gap: var(--space-m);
+  max-width: 52rem;
+  margin: 0 auto var(--space-l);
+  text-align: center;
+}
+
+/* A very long name or email is cut off instead of making the page scroll sideways */
+.ticket-banner h1 {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.ticket-banner p {
+  width: 100%;
+  max-width: 28rem;
+  overflow: hidden;
+  color: var(--neutral-300);
+}
+
+/* minmax(0, 1fr) stops very long text from making the column wider than the screen */
+.ticket-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  gap: var(--space-l);
+}
+
+/* The ticket: the SVG draws the notches, dashed line and white edge,
+   the glass blur comes from backdrop-filter in the .glass class */
+.ticket {
+  display: grid;
+  grid-template-columns: 81fr 19fr;
+  width: 100%;
+  max-width: 37.5rem;
+  min-height: clamp(8.4rem, 46.7vw - 0.93rem, 17.5rem);   /* keeps the 600 x 280 shape as the screen grows */
+  background: url("../assets/images/pattern-ticket.svg") center / 100% 100% no-repeat;
+  border: 0;
+  transition: transform var(--speed);
+}
+
+.ticket:hover {
+  transform: translateY(-6px) rotate(-0.5deg);
+}
+
+.ticket-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+  padding: 5%;
+}
+
+.ticket-logo {
+  width: 62%;
+  max-width: 17rem;
+}
+
+/* padding-left lines the date up under the words "Coding Conf" in the logo */
+.ticket-meta {
+  margin-top: 0.25rem;
+  padding-left: 12%;
+  font-size: clamp(0.75rem, 0.3rem + 1.6vw, 1rem);
+  color: var(--neutral-300);
+}
+
+.attendee {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.attendee-photo {
+  flex: none;
+  width: auto;          /* the width follows the photo's own shape */
+  max-width: 7rem;
+  height: clamp(3rem, 1rem + 6vw, 5rem);
+  border-radius: var(--radius);
+}
+
+/* A name or handle that is too long to fit is cut off at the edge of the ticket */
+.attendee > div {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.attendee-name {
+  font-size: clamp(1rem, 0.5rem + 2.6vw, 1.75rem);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.github-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  max-width: 100%;
+  font-size: clamp(0.75rem, 0.4rem + 1.4vw, 1.125rem);
+  color: var(--neutral-300);
+  text-decoration: none;
+}
+
+.github-link img {
+  flex: none;
+  width: 1.1em;
+  height: auto;
+}
+
+.github-link:is(:hover, :focus) {
+  color: var(--neutral-0);
+  text-decoration: underline;
+}
+
+/* Ticket number in the middle of the right-hand stub */
+.ticket-number {
+  align-self: center;
+  justify-self: center;
+  font-size: clamp(0.75rem, 0.2rem + 2.6vw, 1.5rem);
+  letter-spacing: 0.05em;
+  color: var(--neutral-300);
+}
+
+
+/* ---------- 9. ANIMATIONS ---------- */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ticket-in {
+  from {
+    opacity: 0;
+    transform: translateY(2rem) rotate(-3deg) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(0) scale(1);
+  }
+}
+
+/* Each child of these sections fades in a little after the one before */
+:is(.hero, .page-intro, .ticket-banner, .form) > * {
+  animation: fade-up 0.7s ease both;
+}
+
+:is(.hero, .page-intro, .ticket-banner, .form) > :nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+:is(.hero, .page-intro, .ticket-banner, .form) > :nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+:is(.hero, .form) > :nth-child(n + 4) {
+  animation-delay: 0.3s;
+}
+
+.ticket {
+  animation: ticket-in 0.9s 0.3s ease both;
+}
+
+
+/* ---------- 10. RESPONSIVE BREAKPOINTS ---------- */
+/* Base styles above are for phones. These add to them on larger screens. */
+
+/* Tablet: 768px and wider */
+@media (min-width: 48em) {
+  :root {
+    --bg-photo: url("../assets/images/background-tablet.png");
+  }
+
+  body {
+    background-position:
+      left -3rem top -5rem,
+      right -4rem top 34rem,
+      right -3rem top 2rem,
+      left -2rem bottom,
+      center top,
+      center top;
+    background-size: auto, auto, 22rem auto, 28rem auto, auto, cover;
+  }
+
+  .site-footer p {
+    float: left;
+  }
+
+  .site-footer .footer-right {
+    float: right;
+  }
+
+  .site-footer {
+    text-align: left;
+  }
+}
+
+/* Desktop: 1200px and wider */
+@media (min-width: 75em) {
+  :root {
+    --bg-photo: url("../assets/images/background-desktop.png");
+    --bg-squiggle: url("../assets/images/pattern-squiggly-line-bottom-desktop.svg");
+  }
+
+  body {
+    background-position:
+      left 3rem top -5.5rem,
+      right 18rem top 33rem,
+      right 0 top 4rem,
+      left bottom,
+      center top,
+      center top;
+    background-size: auto, auto, auto, auto, auto, cover;
+  }
+}

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Register for Coding Conf 2026 and generate your personal conference ticket.">
+  <title>Register | Coding Conf 2026</title>
+  <link rel="icon" type="image/png" href="assets/images/favicon-32x32.png">
+
+  <!-- Inconsolata font from the style guide -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <!-- Site header: logo and main navigation -->
+  <header class="site-header">
+    <a href="index.html">
+      <img src="assets/images/logo-full.svg" alt="Coding Conf - home page" width="209" height="30">
+    </a>
+    <nav aria-label="Main navigation">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="login.html" aria-current="page">Register</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+
+    <!-- Page heading -->
+    <section class="page-intro" aria-labelledby="form-title">
+      <h1 id="form-title">Your Journey to Coding Conf 2026 Starts Here!</h1>
+      <p>Secure your spot at the biggest coding conference in Papine.</p>
+    </section>
+
+    <!-- Registration form: novalidate because validation.js checks the fields -->
+    <section aria-label="Registration form">
+      <form id="ticket-form" class="form" novalidate>
+
+        <!-- Avatar upload: the real file input sits invisibly on top of the box -->
+        <div class="field">
+          <label for="avatar">Upload Avatar</label>
+
+          <div class="dropzone" id="dropzone">
+            <input class="dropzone-input" type="file" id="avatar" name="avatar"
+              accept="image/png, image/jpeg" aria-describedby="avatar-hint avatar-error">
+
+            <!-- Shown before a photo is chosen -->
+            <div class="dropzone-content" id="dropzone-prompt">
+              <span class="dropzone-icon">
+                <img src="assets/images/icon-upload.svg" alt="" width="30" height="30">
+              </span>
+              <span>Drag and drop or click to upload</span>
+            </div>
+
+            <!-- Shown after a valid photo is chosen -->
+            <div class="dropzone-content" id="dropzone-preview" hidden>
+              <img class="avatar-preview" id="avatar-preview" src="assets/images/image-avatar.jpg"
+                alt="Preview of your uploaded photo" width="50" height="50">
+              <div class="dropzone-buttons">
+                <button type="button" id="remove-avatar">Remove image</button>
+                <button type="button" id="change-avatar">Change image</button>
+              </div>
+            </div>
+          </div>
+
+          <p class="hint" id="avatar-hint">Upload your photo (JPG or PNG, max size: 500KB).</p>
+          <p class="error" id="avatar-error" aria-live="polite" hidden></p>
+        </div>
+
+        <div class="field">
+          <label for="fullname">Full Name</label>
+          <input type="text" id="fullname" name="fullname" autocomplete="name" maxlength="60"
+            required aria-describedby="fullname-error">
+          <p class="error" id="fullname-error" aria-live="polite" hidden></p>
+        </div>
+
+        <div class="field">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="example@email.com"
+            autocomplete="email" maxlength="100" required aria-describedby="email-error">
+          <p class="error" id="email-error" aria-live="polite" hidden></p>
+        </div>
+
+        <div class="field">
+          <label for="github">GitHub Username</label>
+          <input type="text" id="github" name="github" placeholder="@yourusername"
+            autocomplete="off" spellcheck="false" maxlength="40" required aria-describedby="github-error">
+          <p class="error" id="github-error" aria-live="polite" hidden></p>
+        </div>
+
+        <button class="button" type="submit">Generate My Ticket</button>
+
+      </form>
+    </section>
+
+  </main>
+
+  <!-- Site footer: the two paragraphs are floated left and right on wider screens -->
+  <footer class="site-footer">
+    <p class="footer-left">&copy; 2026 Coding Conf &middot; Papine, Kgn</p>
+    <p class="footer-right">CIT2011 IA#2 &middot; Duanté Chong (2501967)</p>
+  </footer>
+
+  <script src="js/validation.js"></script>
+</body>
+
+</html>
